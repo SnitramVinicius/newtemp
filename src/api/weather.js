@@ -1,18 +1,36 @@
 const API_KEY = import.meta.env.VITE_OPENWEATHER_KEY || "260f2fe32f230748d41342692644204f";
 
-export async function getCurrentWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-    city
-  )}&appid=${API_KEY}&lang=pt_br&units=metric`;
+export async function getCurrentWeather(cityOrCoords) {
+  let url;
+  if (typeof cityOrCoords === "string") {
+    // Buscar por nome da cidade
+    url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+      cityOrCoords
+    )}&appid=${API_KEY}&lang=pt_br&units=metric`;
+  } else if (typeof cityOrCoords === "object" && cityOrCoords.lat && cityOrCoords.lon) {
+    // Buscar por latitude e longitude
+    url = `https://api.openweathermap.org/data/2.5/weather?lat=${cityOrCoords.lat}&lon=${cityOrCoords.lon}&appid=${API_KEY}&lang=pt_br&units=metric`;
+  } else {
+    throw new Error("Parâmetro inválido para getCurrentWeather");
+  }
+
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Cidade não encontrada");
+  if (!res.ok) throw new Error("Erro ao buscar clima atual");
   return res.json();
 }
 
-export async function getForecast(city) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
-    city
-  )}&appid=${API_KEY}&lang=pt_br&units=metric`;
+export async function getForecast(cityOrCoords) {
+  let url;
+  if (typeof cityOrCoords === "string") {
+    url = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
+      cityOrCoords
+    )}&appid=${API_KEY}&lang=pt_br&units=metric`;
+  } else if (typeof cityOrCoords === "object" && cityOrCoords.lat && cityOrCoords.lon) {
+    url = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityOrCoords.lat}&lon=${cityOrCoords.lon}&appid=${API_KEY}&lang=pt_br&units=metric`;
+  } else {
+    throw new Error("Parâmetro inválido para getForecast");
+  }
+
   const res = await fetch(url);
   if (!res.ok) throw new Error("Erro na previsão");
   return res.json();

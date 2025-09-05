@@ -38,6 +38,7 @@ function App() {
   const [mostrarResultado, setMostrarResultado] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Buscar pelo nome da cidade
   async function buscarCidade(nomeCidade) {
     setCidade(nomeCidade);
     setLoading(true);
@@ -57,6 +58,44 @@ function App() {
     }
   }
 
+  // Buscar pela localização do dispositivo
+  async function buscarPorLocalizacao(lat, lon) {
+    setLoading(true);
+    try {
+      const clima = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${import.meta.env.VITE_API_KEY}`
+      ).then((res) => res.json());
+
+      const previsao = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${import.meta.env.VITE_API_KEY}`
+      ).then((res) => res.json());
+
+      setCidade(clima.name);
+      setClimaAtual(clima);
+      setForecast(previsao);
+      setForecastDaily(gerarPrevisaoDiaria(previsao.list));
+      setMostrarResultado(true);
+    } catch (error) {
+      console.error("Erro ao buscar localização:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Pede a localização ao abrir o app
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          buscarPorLocalizacao(pos.coords.latitude, pos.coords.longitude);
+        },
+        (err) => {
+          console.error("Usuário negou ou erro na geolocalização:", err);
+        }
+      );
+    }
+  }, []);
+
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center relative">
       <BackgroundVideo />
@@ -69,7 +108,7 @@ function App() {
           forecast={forecast}
           forecastDaily={forecastDaily}
           onVoltar={() => setMostrarResultado(false)}
-          onBuscar={buscarCidade} 
+          onBuscar={buscarCidade}
         />
       )}
     </div>
