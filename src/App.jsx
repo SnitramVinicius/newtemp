@@ -37,11 +37,13 @@ function App() {
   const [forecastDaily, setForecastDaily] = useState(null);
   const [mostrarResultado, setMostrarResultado] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingMensagem, setLoadingMensagem] = useState(""); // <--- NOVO
 
   // Buscar pelo nome da cidade
   async function buscarCidade(nomeCidade) {
     setCidade(nomeCidade);
     setLoading(true);
+    setLoadingMensagem(`Buscando o clima para ${nomeCidade}...`);
     try {
       const clima = await getCurrentWeather(nomeCidade);
       const previsao = await getForecast(nomeCidade);
@@ -55,20 +57,18 @@ function App() {
       alert("Erro ao buscar clima. Verifique o nome da cidade.");
     } finally {
       setLoading(false);
+      setLoadingMensagem("");
     }
   }
 
   // Buscar pela localização do dispositivo
   async function buscarPorLocalizacao(lat, lon) {
     setLoading(true);
+    setLoadingMensagem("Buscando o clima para sua localização...");
     try {
-      const clima = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${import.meta.env.VITE_API_KEY}`
-      ).then((res) => res.json());
-
-      const previsao = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${import.meta.env.VITE_API_KEY}`
-      ).then((res) => res.json());
+      const coords = { lat, lon };
+      const clima = await getCurrentWeather(coords);
+      const previsao = await getForecast(coords);
 
       setCidade(clima.name);
       setClimaAtual(clima);
@@ -77,8 +77,10 @@ function App() {
       setMostrarResultado(true);
     } catch (error) {
       console.error("Erro ao buscar localização:", error);
+      alert("Não foi possível obter a localização ou os dados do clima.");
     } finally {
       setLoading(false);
+      setLoadingMensagem("");
     }
   }
 
@@ -90,7 +92,8 @@ function App() {
           buscarPorLocalizacao(pos.coords.latitude, pos.coords.longitude);
         },
         (err) => {
-          console.error("Usuário negou ou erro na geolocalização:", err);
+          console.warn("Localização não autorizada ou erro:", err);
+          // Não faz nada, mantém a tela inicial
         }
       );
     }
@@ -100,7 +103,11 @@ function App() {
     <div className="h-screen w-screen flex flex-col items-center justify-center relative">
       <BackgroundVideo />
       <Clock />
-      {loading && <p className="text-white text-2xl">Carregando...</p>}
+      {loading && (
+        <p className="text-white text-2xl text-center px-4">
+          {loadingMensagem || "Carregando..."}
+        </p>
+      )}
       {!mostrarResultado && !loading && <Initial onBuscar={buscarCidade} />}
       {mostrarResultado && climaAtual && forecast && forecastDaily && !loading && (
         <ResultScreen
