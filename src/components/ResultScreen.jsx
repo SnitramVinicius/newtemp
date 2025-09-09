@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaArrowUp, FaArrowDown } from "react-icons/fa";
 
-export default function ResultScreen({ clima, forecast, forecastDaily, onVoltar, onBuscar }) {
+export default function ResultScreen({
+  clima,
+  forecast,
+  forecastDaily,
+  onVoltar,
+  onBuscar,
+}) {
   if (!clima || !forecast || !forecastDaily) return null;
 
   const [cidadeInput, setCidadeInput] = useState("");
@@ -29,18 +35,20 @@ export default function ResultScreen({ clima, forecast, forecastDaily, onVoltar,
       `Condições ${desc1} entre ${hora1}:00 e ${hora2}:00.`,
       `O período deve se manter ${desc1} até ${hora2}:00.`,
       `Tempo ${desc1} predominando nas próximas horas.`,
-      `Entre ${hora1}:00 e ${hora2}:00 o clima continuará ${desc1}.`
+      `Entre ${hora1}:00 e ${hora2}:00 o clima continuará ${desc1}.`,
     ];
 
     const frasesMudanca = [
       `Entre ${hora1}:00 e ${hora2}:00 teremos ${desc1}, mas a previsão é de ${desc2} em seguida.`,
       `Condições ${desc1} até ${hora2}:00, com ${desc2} previsto logo após.`,
       `O início do período será ${desc1}, mudando para ${desc2} por volta das ${hora2}:00.`,
-      `${desc1} no começo, mas deve virar ${desc2} até ${hora2}:00.`
+      `${desc1} no começo, mas deve virar ${desc2} até ${hora2}:00.`,
     ];
 
     if (desc1 === desc2) {
-      return frasesConstantes[Math.floor(Math.random() * frasesConstantes.length)];
+      return frasesConstantes[
+        Math.floor(Math.random() * frasesConstantes.length)
+      ];
     }
 
     return frasesMudanca[Math.floor(Math.random() * frasesMudanca.length)];
@@ -68,10 +76,11 @@ export default function ResultScreen({ clima, forecast, forecastDaily, onVoltar,
 
   return (
     <div className="flex md:flex-row flex-col fixed inset-0 w-screen h-screen md:h-full text-white">
-
       {/* Div da cidade */}
       <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <p className="text-white md:text-[6dvw] text-[12dvw] font-semibold">{cidadeNome}</p>
+        <p className="text-white md:text-[6dvw] text-[12dvw] font-semibold">
+          {cidadeNome}
+        </p>
         <h1 className="md:text-[10dvw] text-[15dvw]">{temperatura}°</h1>
         <h1 className="md:text-[1dvw] text-[3dvw] capitalize">{descricao}</h1>
 
@@ -94,23 +103,20 @@ export default function ResultScreen({ clima, forecast, forecastDaily, onVoltar,
                   src={`https://openweathermap.org/img/wn/${icon}.png`}
                   alt="clima"
                 />
-                    <p className="text-white md:text-[0.8dvw] text-[1.3dvw] capitalize text-center mt-1">
+                <p className="text-white md:text-[0.8dvw] text-[1.3dvw] capitalize text-center mt-1">
                   {desc}
                 </p>
                 <p className="text-white md:text-[1dvw] text-[2dvw]">{`${hora}:00`}</p>
-
-                {/* Descrição abaixo da imagem */}
-            
               </div>
             );
           })}
         </div>
-      </div> {/* <- FECHA a div da cidade aqui */}
+      </div>
 
       {/* Caixa lateral */}
-      <div className="bg-[#3982ca]/80 md:w-[30dvw] h-full flex flex-col items-center justify-center p-4 gap-4 overflow-y-auto">
+      <div className="bg-[#3982ca]/80 md:w-[30dvw] h-full flex flex-col items-center justify-center p-4 gap-4">
         {/* Caixa de busca */}
-        <div className="flex h-12 shadow-md rounded-full overflow-hidden w-full">
+        <div className="flex h-12 shadow-md rounded-full overflow-hidden w-full flex-shrink-0">
           <input
             type="text"
             placeholder="Digite o nome da cidade"
@@ -127,21 +133,27 @@ export default function ResultScreen({ clima, forecast, forecastDaily, onVoltar,
           </button>
         </div>
 
-        {/* Frase dinâmica do resumo do clima */}
+        {/* Resumo do clima - não empurra a caixa */}
         {resumoClima && (
-          <p className="md:text-[1dvw] text-[15px] mt-2 text-center">
-            {resumoClima}
-          </p>
+          <div className="w-full text-center mt-2">
+            <p className="md:text-[1dvw] text-[15px] leading-snug">
+              {resumoClima}
+            </p>
+          </div>
         )}
 
-        <p className="text-white font-semibold md:text-[2dvw] text-[30px] mt-4">Previsão para a semana</p>
+        <p className="text-white font-semibold md:text-[2dvw] text-[30px]">
+          Previsão para a semana
+        </p>
 
         {/* Linhas da previsão semanal */}
         <div className="flex flex-col gap-3 w-full">
           {forecastDaily.map((dia, i) => {
             const data = new Date(dia.date);
             const diaNum = data.getDate();
-            const diaSemana = data.toLocaleDateString("pt-BR", { weekday: "short" });
+            const diaSemana = data.toLocaleDateString("pt-BR", {
+              weekday: "short",
+            });
             const icone = dia.weather.icon;
             const descricao = dia.weather.description;
             const tempMax = dia.temp_max;
@@ -160,16 +172,22 @@ export default function ResultScreen({ clima, forecast, forecastDaily, onVoltar,
                   className="md:w-[3dvw] w-[12dvw] h-auto"
                 />
 
-                <p className="text-white md:text-[1dvw] text-[12px]">{descricao}</p>
+                <p className="text-white md:text-[1dvw] text-[12px] text-center w-[6rem] md:w-auto break-words">
+                  {descricao}
+                </p>
 
                 <div className="flex items-center gap-1">
                   <FaArrowUp className="text-red-400" />
-                  <p className="text-white md:text-[1dvw] text-[18px]">{tempMax}°</p>
+                  <p className="text-white md:text-[1dvw] text-[18px]">
+                    {tempMax}°
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-1">
                   <FaArrowDown className="text-blue-400" />
-                  <p className="text-white md:text-[1dvw] text-[18px]">{tempMin}°</p>
+                  <p className="text-white md:text-[1dvw] text-[18px]">
+                    {tempMin}°
+                  </p>
                 </div>
               </div>
             );

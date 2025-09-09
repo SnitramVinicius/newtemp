@@ -37,6 +37,7 @@ export async function getForecast(cityOrCoords) {
 }
 
 // Função para gerar previsão diária a partir do forecast de 3h
+// Função para gerar previsão diária a partir do forecast de 3h
 export function gerarPrevisaoDiaria(forecastList) {
   const dias = {};
 
@@ -44,11 +45,17 @@ export function gerarPrevisaoDiaria(forecastList) {
     const date = new Date(item.dt * 1000);
     const dia = date.toISOString().split("T")[0]; // YYYY-MM-DD
 
+    // Pega o primeiro horário do dia e força o ícone diurno
+    const weatherDiurno = {
+      ...item.weather[0],
+      icon: item.weather[0].icon.replace('n', 'd') // força diurno
+    };
+
     if (!dias[dia]) {
       dias[dia] = {
         temp_min: item.main.temp_min,
         temp_max: item.main.temp_max,
-        weather: item.weather[0],
+        weather: weatherDiurno,
       };
     } else {
       dias[dia].temp_min = Math.min(dias[dia].temp_min, item.main.temp_min);
@@ -63,3 +70,4 @@ export function gerarPrevisaoDiaria(forecastList) {
     weather: dias[dia].weather,
   }));
 }
+
