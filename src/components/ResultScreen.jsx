@@ -160,36 +160,33 @@ export default function ResultScreen({
             const tempMin = dia.temp_min;
 
             return (
-              <div key={i} className="flex items-center justify-between gap-3">
-                <div className="flex items-center justify-center flex-col md:w-[3dvw] md:h-[3dvw] h-12 w-12 bg-white/20 rounded-full">
-                  <h1 className="md:text-[1.2dvw] text-[15px]">{diaNum}</h1>
-                  <h1 className="md:text-[0.6dvw] text-[10px]">{diaSemana}</h1>
-                </div>
+          <div key={i} className="flex items-center justify-between gap-3 flex-wrap md:flex-nowrap">
+  <div className="flex items-center justify-center flex-col md:w-[3dvw] md:h-[3dvw] h-12 w-12 bg-white/20 rounded-full flex-shrink-0">
+    <h1 className="md:text-[1.2dvw] text-[15px]">{diaNum}</h1>
+    <h1 className="md:text-[0.6dvw] text-[10px]">{diaSemana}</h1>
+  </div>
 
-                <img
-                  src={`https://openweathermap.org/img/wn/${icone}.png`}
-                  alt="clima"
-                  className="md:w-[3dvw] w-[12dvw] h-auto"
-                />
+  <img
+    src={`https://openweathermap.org/img/wn/${icone}.png`}
+    alt="clima"
+    className="md:w-[3dvw] w-[12dvw] h-auto flex-shrink-0"
+  />
 
-                <p className="text-white md:text-[1dvw] text-[12px] text-center w-[6rem] md:w-auto break-words">
-                  {descricao}
-                </p>
+  <p className="text-white md:text-[1dvw] text-[12px] text-center w-[6rem] md:max-w-[15ch] break-words flex-1">
+    {descricao}
+  </p>
 
-                <div className="flex items-center gap-1">
-                  <FaArrowUp className="text-red-400" />
-                  <p className="text-white md:text-[1dvw] text-[18px]">
-                    {tempMax}°
-                  </p>
-                </div>
+  <div className="flex items-center gap-1 flex-shrink-0">
+    <FaArrowUp className="text-red-400" />
+    <p className="text-white md:text-[1dvw] text-[18px]">{tempMax}°</p>
+  </div>
 
-                <div className="flex items-center gap-1">
-                  <FaArrowDown className="text-blue-400" />
-                  <p className="text-white md:text-[1dvw] text-[18px]">
-                    {tempMin}°
-                  </p>
-                </div>
-              </div>
+  <div className="flex items-center gap-1 flex-shrink-0">
+    <FaArrowDown className="text-blue-400" />
+    <p className="text-white md:text-[1dvw] text-[18px]">{tempMin}°</p>
+  </div>
+</div>
+
             );
           })}
         </div>
