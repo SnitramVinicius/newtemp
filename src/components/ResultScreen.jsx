@@ -75,10 +75,10 @@ export default function ResultScreen({
   };
 
   return (
-    <div className="flex md:flex-row flex-col fixed inset-0 w-screen h-screen md:h-full text-white">
+   <div className="flex md:flex-row flex-col fixed inset-0 w-screen md:h-full h-auto text-white">
       {/* Div da cidade */}
-      <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <p className="text-white md:text-[6dvw] text-[12dvw] font-semibold">
+      <div className="flex-1 flex flex-col items-center justify-start text-center p-2 md:h-full h-auto">
+        <p className="text-white md:text-[6dvw] text-[12dvw] font-semibold break-words">
           {cidadeNome}
         </p>
         <h1 className="md:text-[10dvw] text-[15dvw]">{temperatura}°</h1>
@@ -114,7 +114,7 @@ export default function ResultScreen({
       </div>
 
       {/* Caixa lateral */}
-      <div className="bg-[#3982ca]/80 md:w-[30dvw] h-full flex flex-col items-center justify-center p-4 gap-4">
+      <div className="bg-[#3982ca]/80 md:w-[30dvw] h-full flex flex-col items-center justify-between p-4 gap-4">
         {/* Caixa de busca */}
         <div className="flex h-12 shadow-md rounded-full overflow-hidden w-full flex-shrink-0">
           <input
