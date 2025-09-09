@@ -75,10 +75,10 @@ export default function ResultScreen({
   };
 
   return (
-   <div className="flex md:flex-row flex-col fixed inset-0 w-screen md:h-full h-auto text-white">
+    <div className="flex md:flex-row flex-col fixed inset-0 w-screen h-screen md:h-full text-white">
       {/* Div da cidade */}
-      <div className="flex-1 flex flex-col items-center justify-start text-center p-2 md:h-full h-auto">
-        <p className="text-white md:text-[6dvw] text-[12dvw] font-semibold break-words">
+      <div className="flex-1 flex flex-col items-center justify-center text-center">
+        <p className="text-white md:text-[6dvw] text-[12dvw] font-semibold">
           {cidadeNome}
         </p>
         <h1 className="md:text-[10dvw] text-[15dvw]">{temperatura}°</h1>
@@ -114,7 +114,7 @@ export default function ResultScreen({
       </div>
 
       {/* Caixa lateral */}
-      <div className="bg-[#3982ca]/80 md:w-[30dvw] h-full flex flex-col items-center justify-between p-4 gap-4">
+      <div className="bg-[#3982ca]/80 md:w-[30dvw] h-full flex flex-col items-center justify-center p-4 gap-4">
         {/* Caixa de busca */}
         <div className="flex h-12 shadow-md rounded-full overflow-hidden w-full flex-shrink-0">
           <input
@@ -160,33 +160,36 @@ export default function ResultScreen({
             const tempMin = dia.temp_min;
 
             return (
-          <div key={i} className="flex items-center justify-between gap-3 flex-wrap md:flex-nowrap">
-  <div className="flex items-center justify-center flex-col md:w-[3dvw] md:h-[3dvw] h-12 w-12 bg-white/20 rounded-full flex-shrink-0">
-    <h1 className="md:text-[1.2dvw] text-[15px]">{diaNum}</h1>
-    <h1 className="md:text-[0.6dvw] text-[10px]">{diaSemana}</h1>
-  </div>
+              <div key={i} className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-center flex-col md:w-[3dvw] md:h-[3dvw] h-12 w-12 bg-white/20 rounded-full">
+                  <h1 className="md:text-[1.2dvw] text-[15px]">{diaNum}</h1>
+                  <h1 className="md:text-[0.6dvw] text-[10px]">{diaSemana}</h1>
+                </div>
 
-  <img
-    src={`https://openweathermap.org/img/wn/${icone}.png`}
-    alt="clima"
-    className="md:w-[3dvw] w-[12dvw] h-auto flex-shrink-0"
-  />
+                <img
+                  src={`https://openweathermap.org/img/wn/${icone}.png`}
+                  alt="clima"
+                  className="md:w-[3dvw] w-[12dvw] h-auto"
+                />
 
-  <p className="text-white md:text-[1dvw] text-[12px] text-center w-[6rem] md:max-w-[15ch] break-words flex-1">
-    {descricao}
-  </p>
+                <p className="text-white md:text-[1dvw] text-[12px] text-center w-[6rem] md:w-auto break-words">
+                  {descricao}
+                </p>
 
-  <div className="flex items-center gap-1 flex-shrink-0">
-    <FaArrowUp className="text-red-400" />
-    <p className="text-white md:text-[1dvw] text-[18px]">{tempMax}°</p>
-  </div>
+                <div className="flex items-center gap-1">
+                  <FaArrowUp className="text-red-400" />
+                  <p className="text-white md:text-[1dvw] text-[18px]">
+                    {tempMax}°
+                  </p>
+                </div>
 
-  <div className="flex items-center gap-1 flex-shrink-0">
-    <FaArrowDown className="text-blue-400" />
-    <p className="text-white md:text-[1dvw] text-[18px]">{tempMin}°</p>
-  </div>
-</div>
-
+                <div className="flex items-center gap-1">
+                  <FaArrowDown className="text-blue-400" />
+                  <p className="text-white md:text-[1dvw] text-[18px]">
+                    {tempMin}°
+                  </p>
+                </div>
+              </div>
             );
           })}
         </div>
